@@ -1,0 +1,59 @@
+import random
+import string
+
+def generar_clave():
+    """Genera una clave aleatoria de 5 caracteres"""
+    return ''.join(random.choices(string.ascii_lowercase, k=5))
+
+def cifrar_mensaje(mensaje, clave):
+    """Cifra el mensaje usando un cifrado César personalizado basado en la clave"""
+    mensaje = mensaje.lower()
+    resultado = ""
+    for i, letra in enumerate(mensaje):
+        if letra in string.ascii_lowercase:
+            # Usa cada letra de la clave como un desplazamiento diferente
+            desplazamiento = ord(clave[i % len(clave)]) - ord('a')
+            # Aplica el desplazamiento
+            nueva_pos = (ord(letra) - ord('a') + desplazamiento) % 26
+            resultado += chr(nueva_pos + ord('a'))
+        else:
+            resultado += letra
+    return resultado
+
+def verificar_respuesta(mensaje_original, mensaje_cifrado, clave_propuesta):
+    """Verifica si la clave propuesta descifra correctamente el mensaje"""
+    intento = cifrar_mensaje(mensaje_original, clave_propuesta)
+    return intento == mensaje_cifrado
+
+def ejecutar_desafio():
+    """Ejecuta el desafío completo"""
+    mensajes = [
+        "los secretos estan ocultos",
+        "la criptografia es fascinante",
+        "descifra el codigo secreto",
+        "mensaje confidencial"
+    ]
+    
+    mensaje = random.choice(mensajes)
+    clave = generar_clave()
+    mensaje_cifrado = cifrar_mensaje(mensaje, clave)
+    
+    print("¡Bienvenido al Desafío de Criptografía!")
+    print("\nHas interceptado un mensaje cifrado:")
+    print(f"Mensaje cifrado: {mensaje_cifrado}")
+    print("\nSabemos que:")
+    print("1. El mensaje original está en español")
+    print("2. Se usó una clave de 5 letras minúsculas")
+    print("3. Cada letra de la clave determina un desplazamiento diferente en el cifrado César")
+    print("\nTu misión es:")
+    print("1. Descubrir el mensaje original")
+    print("2. Encontrar la clave utilizada")
+    
+    return mensaje, mensaje_cifrado, clave
+
+if __name__ == "__main__":
+    mensaje, cifrado, clave = ejecutar_desafio()
+    # Para verificación (normalmente no se mostraría):
+    print("\n--- Información de verificación ---")
+    print(f"Mensaje original: {mensaje}")
+    print(f"Clave utilizada: {clave}")
